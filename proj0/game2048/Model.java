@@ -5,7 +5,9 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author TODO: Sunnie Shen
+ 1. earn score each step: number generated
+ 2. full block/ 2048 generated >>> game over
  */
 public class Model extends Observable {
     /** Current contents of the board. */
