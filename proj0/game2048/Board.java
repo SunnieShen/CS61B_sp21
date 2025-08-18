@@ -100,7 +100,7 @@ public class Board implements Iterable<Tile> {
         } else {
             values[pcol][prow] = tile.merge(pcol, prow, tile1);
             return true;
-        }
+        }//把格子t移动到(col,row), 并返回是否合并
     }
 
     @Override

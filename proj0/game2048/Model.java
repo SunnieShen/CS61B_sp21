@@ -115,7 +115,77 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+/*        for (int i=0; i< board.size(); i++) {//col
+            boolean this_col_changed = false;//flag change in col i
+            for (int j=board.size()-2; j>=0; j++) {//row, iterate through potential moving block, up-down
+                Tile t = board.tile(i, j);
+                if (board.tile(i,j)!=null){//if this block is not a blank
+                    for (int k=j+1; k<board.size()-1;k++) {//iteration of row --iterate block above the moving block. down-up
+                        if ((this_col_changed && board.move(i,k,t))) {//ensure merge at most one pair each col
+                            //
+                            board.move(i,k-1,t);
+                            break;
+                        } else if (board.move(i, k, t)) {
+                            board.move(i, k, t);
+                            changed = true;
+                        } else if (){
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+ */
+        for (int i=0; i< board.size(); i++) {// col i
+            boolean this_col_merged = false;
+            for (int j=board.size()-2; j>=0; j--) {// row j
+            // iterate all block (moving object, non-empty)
+                Tile t = board.tile(i,j);
+                if (t==null){continue;}
+                for (int k=j+1; k<board.size(); k++) {//block above this tile.(i,j)
+                    if (k==j+1 && board.tile(i,k).value()!=t.value()) {//no move
+                        break;
+                    }else if (board.tile(i,j).value()!=t.value()){//move without merge #1
+                        board.move(i,k,t);
+                        changed = true;
+                        break;
+                    }else if (board.tile(i,j).value()==t.value() && this_col_merged) {
+                        //move without merge <<< col already changed (merged)
+                        board.move(i,k,t);
+                        changed = true;
+                        break;
+                    }else if (board.tile(i,j).value()==t.value()) {
+                        //move with merge
+                        board.move(i,k,t);
+                        this_col_merged=true;
+                        score += 2*t.value();// update score
+                        changed = true;
+                        break;
+                    }
+                }
+            }
+        }
+        /*situation: Q: move(){void, return val}, if(move)--> only return val, no void execution?
+22
+20
+00
+44
+"4" move, without merge
+    this_col_changed=true (merge before this block)
+    tile.(1,0)!=tile.(1,3)
+44
+04
+00
+40
+move, with merge
+    tile == tile
+2
+4
+0
+0
+no move
+    tile.(0,2)!=tile(0,3)
+ */
         checkGameOver();
         if (changed) {
             setChanged();
